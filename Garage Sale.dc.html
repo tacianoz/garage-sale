@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Archivo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<meta name="ext-resource-dependency" content="photos/p02-0.jpg" data-resource-id="p02_0">
+<meta name="ext-resource-dependency" content="photos/p02-1.jpg" data-resource-id="p02_1">
+<meta name="ext-resource-dependency" content="photos/p03-0.jpg" data-resource-id="p03_0">
+<meta name="ext-resource-dependency" content="photos/p03-1.jpg" data-resource-id="p03_1">
+<meta name="ext-resource-dependency" content="photos/p04-0.jpg" data-resource-id="p04_0">
+<meta name="ext-resource-dependency" content="photos/p05-0.jpg" data-resource-id="p05_0">
+<meta name="ext-resource-dependency" content="photos/p06-0.jpg" data-resource-id="p06_0">
+<meta name="ext-resource-dependency" content="photos/p06-1.jpg" data-resource-id="p06_1">
+<meta name="ext-resource-dependency" content="photos/p07-0.jpg" data-resource-id="p07_0">
+<meta name="ext-resource-dependency" content="photos/p08-0.jpg" data-resource-id="p08_0">
+<meta name="ext-resource-dependency" content="photos/p08-1.jpg" data-resource-id="p08_1">
+<meta name="ext-resource-dependency" content="photos/p09-0.jpg" data-resource-id="p09_0">
+<meta name="ext-resource-dependency" content="photos/p09-1.jpg" data-resource-id="p09_1">
+<meta name="ext-resource-dependency" content="photos/p09-2.jpg" data-resource-id="p09_2">
+<meta name="ext-resource-dependency" content="photos/p09-3.jpg" data-resource-id="p09_3">
+<meta name="ext-resource-dependency" content="photos/p10-0.jpg" data-resource-id="p10_0">
+<meta name="ext-resource-dependency" content="photos/p11-0.jpg" data-resource-id="p11_0">
+<meta name="ext-resource-dependency" content="photos/p12-0.jpg" data-resource-id="p12_0">
+<template id="__bundler_thumbnail" data-bg-color="#f6f1e8">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f6f1e8"></rect>
+    <text x="600" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="300" font-weight="600" fill="#333829">Z</text>
+    <rect x="480" y="520" width="90" height="2" fill="#c9bda1"></rect>
+    <rect x="594" y="514" width="12" height="12" fill="#8a5a33" transform="rotate(45 600 520)"></rect>
+    <rect x="630" y="520" width="90" height="2" fill="#c9bda1"></rect>
+  </svg>
+</template>
+<style>
+html,body{margin:0;padding:0;background:#f6f1e8;}
+*{box-sizing:border-box;}
+a{color:#3f4a3a;} a:hover{color:#22281e;}
+::selection{background:#e6dcc4;}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#f6f1e8;color:#211d16;font-family:'Archivo',sans-serif;">
+  <div style="background:#333829;color:#efe9da;text-align:center;padding:10px 16px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;line-height:1.7;">Relocating late August — everything must go · Collection in Jor Bagh, New Delhi</div>
+  <header style="text-align:center;padding:64px 20px 36px;">
+    <div style="font-size:12px;letter-spacing:0.32em;text-transform:uppercase;color:#8a5a33;font-weight:600;">Departure Sale · New Delhi</div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(42px,7vw,78px);line-height:1.05;margin:18px auto 0;max-width:800px;">The Zimmermanns’<br>Garage Sale</h1>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:26px 0 18px;">
+      <span style="display:block;width:64px;height:1px;background:#c9bda1;"></span>
+      <span style="display:block;width:5px;height:5px;background:#8a5a33;transform:rotate(45deg);"></span>
+      <span style="display:block;width:64px;height:1px;background:#c9bda1;"></span>
+    </div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.4vw,23px);color:#5d5443;margin:0 auto;max-width:520px;line-height:1.5;">A selection of furniture, art &amp; electronics from our home in Jor Bagh — every piece kept with care, priced to find a new home.</p>
+  </header>
+  <nav style="position:sticky;top:0;z-index:20;background:rgba(246,241,232,0.94);backdrop-filter:blur(6px);border-top:1px solid #e3dac7;border-bottom:1px solid #e3dac7;padding:14px 16px;">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:1160px;margin:0 auto;">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="6">
+        <button onClick="{{ c.onClick }}" style="font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;font-weight:{{ c.weight }};padding:9px 16px;border-radius:999px;border:1px solid {{ c.borderColor }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;transition:all .15s;" style-hover="border-color:#333829;">{{ c.label }} · {{ c.count }}</button>
+      </sc-for>
+    </div>
+  </nav>
+  <main style="max-width:1160px;margin:0 auto;padding:44px 20px 24px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:26px;">
+      <sc-for list="{{ items }}" as="it" hint-placeholder-count="9">
+        <article onClick="{{ it.open }}" style="background:#fdfbf5;border:1px solid #e3dac7;cursor:pointer;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s;opacity:{{ it.opacity }};" style-hover="transform:translateY(-4px);box-shadow:0 14px 30px rgba(60,50,30,0.12);">
+          <div style="position:relative;aspect-ratio:4/3.4;overflow:hidden;background:#ece5d6;">
+            <div role="img" aria-label="{{ it.name }}" style="width:100%;height:100%;background:#ece5d6 url('{{ it.photo }}') center/cover no-repeat;filter:{{ it.imgFilter }};"></div>
+            <sc-if value="{{ it.isReserved }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;top:12px;left:12px;background:#b07d2e;color:#fdf9ef;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;padding:6px 12px;">Reserved</span>
+            </sc-if>
+            <sc-if value="{{ it.isSold }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;top:12px;left:12px;background:#403a2e;color:#fdf9ef;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;padding:6px 12px;">Sold</span>
+            </sc-if>
+            <sc-if value="{{ it.multi }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;bottom:12px;right:12px;background:rgba(33,29,22,0.72);color:#efe9da;font-size:11px;letter-spacing:0.08em;padding:5px 10px;">{{ it.photoCount }} photos</span>
+            </sc-if>
+          </div>
+          <div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1;">
+            <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#8a5a33;font-weight:600;"><span>{{ it.cat }}</span><span style="color:#a99e88;">Item {{ it.no }}</span></div>
+            <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:27px;line-height:1.12;margin:0;">{{ it.name }}</h2>
+            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-top:6px;">
+              <span style="font-size:17px;font-weight:600;letter-spacing:0.02em;color:{{ it.priceColor }};text-decoration:{{ it.priceDeco }};">{{ it.price }}</span>
+              <span style="font-size:12px;color:#a99e88;letter-spacing:0.06em;">View details →</span>
+            </div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </main>
+  <footer style="text-align:center;padding:48px 20px 72px;color:#5d5443;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px;">
+      <span style="display:block;width:64px;height:1px;background:#c9bda1;"></span>
+      <span style="display:block;width:5px;height:5px;background:#8a5a33;transform:rotate(45deg);"></span>
+      <span style="display:block;width:64px;height:1px;background:#c9bda1;"></span>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#211d16;">Interested in an item?</div>
+    <p style="max-width:440px;margin:12px auto 22px;font-size:14px;line-height:1.7;">All prices in INR. Collection by buyer in Jor Bagh, New Delhi. Reach out on WhatsApp or by e-mail to arrange a viewing or purchase before late August.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{{ waGeneral }}" onClick="{{ waGeneralClick }}" target="_blank" rel="noopener" style="display:inline-block;background:#333829;color:#efe9da;text-decoration:none;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;padding:13px 24px;" style-hover="background:#22281e;color:#ffffff;">WhatsApp us</a>
+      <a href="{{ mailGeneral }}" style="display:inline-block;border:1px solid #333829;color:#333829;text-decoration:none;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;padding:13px 24px;" style-hover="background:#333829;color:#efe9da;">E-mail us</a>
+    </div>
+    <div style="margin-top:34px;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#a99e88;">The Zimmermann family · Jor Bagh · New Delhi</div>
+  </footer>
+  <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(28,24,16,0.58);z-index:50;display:flex;align-items:center;justify-content:center;padding:18px;">
+      <div onClick="{{ stop }}" style="background:#fbf8f1;max-width:960px;width:100%;max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 30px 80px rgba(20,16,8,0.4);">
+        <button onClick="{{ closeModal }}" aria-label="Close" style="position:absolute;top:10px;right:10px;z-index:5;width:38px;height:38px;border:none;background:rgba(33,29,22,0.72);color:#efe9da;font-size:17px;cursor:pointer;line-height:1;" style-hover="background:#211d16;">✕</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));">
+          <div style="background:#ece5d6;">
+            <div style="position:relative;aspect-ratio:4/4.2;">
+              <sc-if value="{{ imgsReady }}" hint-placeholder-val="{{ false }}"><img src="{{ selPhoto }}" alt="{{ sel.name }}" style="width:100%;height:100%;object-fit:cover;display:block;filter:{{ sel.imgFilter }};"></sc-if>
+              <sc-if value="{{ sel.multi }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ prevPhoto }}" aria-label="Previous photo" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:none;background:rgba(251,248,241,0.88);color:#211d16;font-size:16px;cursor:pointer;" style-hover="background:#fbf8f1;">‹</button>
+                <button onClick="{{ nextPhoto }}" aria-label="Next photo" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:none;background:rgba(251,248,241,0.88);color:#211d16;font-size:16px;cursor:pointer;" style-hover="background:#fbf8f1;">›</button>
+              </sc-if>
+            </div>
+            <sc-if value="{{ sel.multi }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:8px;padding:10px;flex-wrap:wrap;">
+                <sc-for list="{{ selThumbs }}" as="t" hint-placeholder-count="3">
+                  <sc-if value="{{ imgsReady }}" hint-placeholder-val="{{ false }}"><img src="{{ t.url }}" alt="" onClick="{{ t.pick }}" style="width:56px;height:56px;object-fit:cover;cursor:pointer;border:2px solid {{ t.border }};display:block;"></sc-if>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="padding:34px 30px 30px;display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#8a5a33;font-weight:600;"><span>{{ sel.cat }}</span><span style="color:#a99e88;">Item {{ sel.no }}</span></div>
+            <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:36px;line-height:1.08;margin:0;">{{ sel.name }}</h2>
+            <sc-if value="{{ sel.isReserved }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#f3e3c3;border:1px solid #d9b567;color:#7a5514;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:9px 12px;">Reserved — enquire in case it frees up</div>
+            </sc-if>
+            <sc-if value="{{ sel.isSold }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#e2ddd2;border:1px solid #b8ae99;color:#4d4636;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:9px 12px;">Sold — no longer available</div>
+            </sc-if>
+            <div style="display:flex;align-items:baseline;gap:10px;">
+              <span style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#a99e88;">Asking price</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:{{ sel.priceColor }};text-decoration:{{ sel.priceDeco }};">{{ sel.price }}</span>
+            </div>
+            <p style="font-size:14.5px;line-height:1.75;color:#4d4636;margin:0;text-wrap:pretty;">{{ sel.desc }}</p>
+            <div>
+              <div style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#8a5a33;font-weight:600;padding-bottom:8px;border-bottom:1px solid #e3dac7;">Details</div>
+              <sc-for list="{{ selDetails }}" as="d" hint-placeholder-count="4">
+                <div style="display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid #ece5d6;font-size:13.5px;"><span style="color:#8b8069;">{{ d.k }}</span><span style="font-weight:500;text-align:right;">{{ d.v }}</span></div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ sel.contactable }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+                <a href="{{ sel.wa }}" onClick="{{ sel.waClick }}" target="_blank" rel="noopener" style="flex:1;min-width:170px;text-align:center;background:#333829;color:#efe9da;text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;padding:14px 18px;" style-hover="background:#22281e;color:#ffffff;">WhatsApp about this</a>
+                <a href="{{ sel.mail }}" style="flex:1;min-width:150px;text-align:center;border:1px solid #333829;color:#333829;text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;padding:14px 18px;" style-hover="background:#333829;color:#efe9da;">E-mail</a>
+              </div>
+              <div style="font-size:12px;color:#a99e88;text-align:center;">Collection by buyer · Jor Bagh, New Delhi</div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;whatsappNumber&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;+55 61 98111 5785&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact&quot;},&quot;contactEmail&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;beatrizcascelli@gmail.com&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact&quot;},&quot;showSoldItems&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Catalog&quot;}}">
+// ✏️ TO MARK AN ITEM SOLD OR RESERVED: change its `status` below to "sold" or "reserved" (or back to "available").
+const ITEMS = [
+  { no: '01', cat: 'Seating', name: 'Set of 4 Dining Chairs', price: 20000, status: 'available',
+    photos: ['photos/p02-0.jpg', 'photos/p02-1.jpg'],
+    desc: 'A set of four mid-century style dining chairs in bent walnut-toned wood, each with a curved, open-back silhouette upholstered in black faux leather. The sculptural wraparound frame and tapered splayed legs give them a warm, gallery-worthy presence — equally at home around a dining table or used as accent seating. Purchased as a set and kept in excellent condition throughout our time in Delhi.',
+    details: [['Quantity', '4 chairs'], ['Width', '20 in'], ['Height', '31 in'], ['Material', 'Bent wood, faux leather'], ['Condition', 'Excellent']] },
+  { no: '02', cat: 'Living Room', name: 'Two-Seat Sofa Bed', price: 20000, status: 'available',
+    photos: ['photos/p03-0.jpg', 'photos/p03-1.jpg'],
+    desc: 'A clean-lined two-seat sofa bed upholstered in soft ivory tufted fabric, with two matching bolster cushions and slim wooden block legs. Compact enough for an apartment living room or study, and converts easily into a bed for overnight guests. A versatile, comfortable piece that has served beautifully as both everyday seating and a guest bed.',
+    details: [['Width', '81 in'], ['Height', '32 in'], ['Upholstery', 'Ivory tufted fabric'], ['Function', 'Converts to bed'], ['Condition', 'Very good']] },
+  { no: '03', cat: 'Electronics', name: 'Wzatco Full HD Projector', price: 10000, status: 'available',
+    photos: ['photos/p04-0.jpg'],
+    desc: 'Wzatco Full HD 1080p ceiling-mount projector with sealed optical engine and auto-focus, ideal for a home cinema or media room. Sold complete with its ceiling mounting bracket and cabling, ready to be reinstalled. A great option for anyone setting up a projector room from scratch.',
+    details: [['Model', 'Wzatco Full HD 1080'], ['Resolution', '1080p'], ['Includes', 'Ceiling mount, cables'], ['Condition', 'Working, well maintained']] },
+  { no: '04', cat: 'Art', name: 'Green & White Waves Frame', price: 10000, status: 'available',
+    photos: ['photos/p05-0.jpg'],
+    desc: 'A large-scale textured wall art piece in a soft palette of sage green, cream, and deep olive, built up in sculptural plaster-like waves and finished in a slim black frame. A striking statement piece for a living room or entryway wall, with a tactile, hand-finished quality.',
+    details: [['Width', '35 in'], ['Height', '47 in'], ['Style', 'Textured abstract, framed'], ['Condition', 'Excellent']] },
+  { no: '05', cat: 'Entryway', name: 'Bench Shoe Rack', price: 5000, status: 'available',
+    photos: ['photos/p06-0.jpg', 'photos/p06-1.jpg'],
+    desc: 'A wood-finish entryway bench with a cushioned ivory faux-leather top and two open shelves below for shoe storage, mounted on smooth-rolling castors for easy repositioning. A practical, good-looking piece for a hallway or mudroom — sit down to put your shoes on, and keep them tidy underneath.',
+    details: [['Width', '32 in'], ['Height', '20 in'], ['Feature', 'Cushioned top, castors'], ['Condition', 'Excellent']] },
+  { no: '06', cat: 'Decor', name: 'Ghanaian Statues, Accra', price: 5000, status: 'available',
+    photos: ['photos/p07-0.jpg'],
+    desc: 'A set of four hand-finished statuettes sourced in Accra, Ghana, each depicting a graceful female figure in black resin with intricate gold and silver textile-pattern detailing, mounted on individual black bases. A striking decorative grouping for a console, shelf, or side table — full of character and conversation-starting provenance.',
+    details: [['Quantity', 'Set of 4'], ['Origin', 'Accra, Ghana'], ['Material', 'Resin, black & gold finish'], ['Condition', 'Excellent']] },
+  { no: '07', cat: 'Bedroom', name: 'Bedside Table', price: 5000, status: 'available',
+    photos: ['photos/p08-0.jpg', 'photos/p08-1.jpg'],
+    desc: 'A sculptural solid-wood side table with a striking geometric silhouette — a square top set on an angled zig-zag base, finished in a rich, polished honey-wood tone. Compact enough for a bedside or as an accent table beside a sofa or armchair, this piece brings a modern, gallery-like edge to any room.',
+    details: [['Width', '16 in'], ['Height', '22 in'], ['Material', 'Solid wood'], ['Condition', 'Excellent']] },
+  { no: '08', cat: 'Living Room', name: 'Brown Lounge Chair & Ottoman', price: 18000, status: 'available',
+    photos: ['photos/p09-0.jpg', 'photos/p09-1.jpg', 'photos/p09-2.jpg', 'photos/p09-3.jpg'],
+    desc: 'A reclining lounge chair in rich brown faux leather with a tall cushioned backrest, a handy side pocket, and slim tapered wooden legs, paired with its matching tufted ottoman. A comfortable, well-built reading or TV chair that anchors a room beautifully — sold with the ottoman as a set.',
+    details: [['Width', '29.5 in'], ['Height', '37 in'], ['Includes', 'Matching ottoman'], ['Condition', 'Excellent']] },
+  { no: '09', cat: 'Art', name: 'Beige Textured Frame', price: 12000, status: 'available',
+    photos: ['photos/p10-0.jpg'],
+    desc: 'A large sculptural canvas in soft beige and white, with a raised plaster-textured motif sweeping across one corner. Understated and tactile, this piece works beautifully as a quiet statement over a sofa, bed, or console — pairs naturally with warm neutral interiors.',
+    details: [['Width', '30 in'], ['Height', '42 in'], ['Style', 'Textured abstract, unframed canvas'], ['Condition', 'Excellent']] },
+  { no: '10', cat: 'Art', name: 'Elephant Madhubani Frame', price: 7000, status: 'available',
+    photos: ['photos/p11-0.jpg'],
+    desc: 'A vibrant, intricately hand-painted Madhubani-style artwork depicting a circular procession of elephants in a rich palette of ochre, red, green, and indigo, finished in a light wood frame under glass. A beautiful piece of Indian folk art and an authentic souvenir of a Delhi posting — full of pattern and craftsmanship.',
+    details: [['Width', '34 in'], ['Height', '26 in'], ['Style', 'Madhubani folk art, framed'], ['Condition', 'Excellent']] },
+  { no: '11', cat: 'Electronics', name: 'Samsung 50" Crystal UHD 4K TV', price: 19000, status: 'available',
+    photos: ['photos/p12-0.jpg'],
+    desc: 'A Samsung 50-inch Crystal UHD 4K Smart TV (model UN50AU7700G), with its original table stand. Sharp 4K picture, built-in smart features, and multiple HDMI ports — a reliable everyday television, sold with all cables included.',
+    details: [['Screen size', '50 in'], ['Model', 'UN50AU7700G'], ['Resolution', '4K UHD'], ['Condition', 'Working well, ~6 years old']] },
+];
+const fmtPrice = (n) => '₹' + n.toLocaleString('en-IN');
+const res = (path) => {
+  const id = path.replace('photos/', '').replace('.jpg', '').replace('-', '_');
+  return (window.__resources && window.__resources[id]) || path;
+};
+class Component extends DCLogic {
+  state = { cat: 'All', selNo: null, photoIdx: 0 };
+  componentDidMount() {
+    this._onKey = (e) => {
+      if (this.state.selNo == null) return;
+      if (e.key === 'Escape') this.setState({ selNo: null });
+      if (e.key === 'ArrowLeft') this.movePhoto(-1);
+      if (e.key === 'ArrowRight') this.movePhoto(1);
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
+  movePhoto(d) {
+    const it = ITEMS.find(i => i.no === this.state.selNo);
+    if (!it || it.photos.length < 2) return;
+    const n = it.photos.length;
+    this.setState(s => ({ photoIdx: (s.photoIdx + d + n) % n }));
+  }
+  decorate(it) {
+    const waNumber = String(this.props.whatsappNumber ?? '+91 00000 00000').replace(/[^0-9]/g, '');
+    const email = this.props.contactEmail ?? 'zimmermann.family@example.com';
+    const price = fmtPrice(it.price);
+    const msg = `Hi! I'm interested in "${it.name}" (${price}) from the Zimmermanns' garage sale.`;
+    const sold = it.status === 'sold', reserved = it.status === 'reserved';
+    return {
+      ...it, price, photo: res(it.photos[0]), photoCount: it.photos.length, multi: it.photos.length > 1,
+      isSold: sold, isReserved: reserved, contactable: !sold,
+      opacity: sold ? '0.62' : '1', imgFilter: sold ? 'grayscale(1)' : 'none',
+      priceColor: sold ? '#a99e88' : '#211d16', priceDeco: sold ? 'line-through' : 'none',
+      wa: `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
+      waClick: (e) => { e.preventDefault(); window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener'); },
+      mail: `mailto:${email}?subject=${encodeURIComponent('Garage sale — ' + it.name)}&body=${encodeURIComponent(msg)}`,
+      open: () => this.setState({ selNo: it.no, photoIdx: 0 }),
+    };
+  }
+  renderVals() {
+    const showSold = this.props.showSoldItems ?? true;
+    const pool = ITEMS.filter(i => showSold || i.status !== 'sold');
+    const catNames = ['All', ...[...new Set(pool.map(i => i.cat))]];
+    const cats = catNames.map(c => {
+      const active = this.state.cat === c;
+      return { label: c, count: c === 'All' ? pool.length : pool.filter(i => i.cat === c).length,
+        bg: active ? '#333829' : 'transparent', color: active ? '#efe9da' : '#5d5443',
+        borderColor: active ? '#333829' : '#c9bda1', weight: active ? '600' : '400',
+        onClick: () => this.setState({ cat: c }) };
+    });
+    const items = pool.filter(i => this.state.cat === 'All' || i.cat === this.state.cat).map(i => this.decorate(i));
+    const selRaw = ITEMS.find(i => i.no === this.state.selNo);
+    const sel = selRaw ? this.decorate(selRaw) : null;
+    const waNumber = String(this.props.whatsappNumber ?? '+91 00000 00000').replace(/[^0-9]/g, '');
+    const email = this.props.contactEmail ?? 'zimmermann.family@example.com';
+    const gMsg = "Hi! I'm interested in your garage sale in Jor Bagh.";
+    return {
+      imgsReady: true,
+      cats, items, hasSel: !!sel, sel: sel || {},
+      selPhoto: sel ? res(sel.photos[Math.min(this.state.photoIdx, sel.photos.length - 1)]) : '',
+      selThumbs: sel ? sel.photos.map((url, i) => ({ url: res(url), border: i === Math.min(this.state.photoIdx, sel.photos.length - 1) ? '#8a5a33' : 'transparent', pick: () => this.setState({ photoIdx: i }) })) : [],
+      selDetails: sel ? sel.details.map(([k, v]) => ({ k, v })) : [],
+      closeModal: () => this.setState({ selNo: null }),
+      stop: (e) => e.stopPropagation(),
+      prevPhoto: () => this.movePhoto(-1),
+      nextPhoto: () => this.movePhoto(1),
+      waGeneral: `https://wa.me/${waNumber}?text=${encodeURIComponent(gMsg)}`,
+      waGeneralClick: (e) => { e.preventDefault(); window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(gMsg)}`, '_blank', 'noopener'); },
+      mailGeneral: `mailto:${email}?subject=${encodeURIComponent('Garage sale — Jor Bagh')}`,
+    };
+  }
+}
+</script>
+</body>
+</html>
