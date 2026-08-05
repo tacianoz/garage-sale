@@ -253,15 +253,20 @@ async function ghRead(file) {
   if (!r.ok) throw new Error('GitHub read failed (' + r.status + ')');
   return r.json();
 }
+const ghSleep = (ms) => new Promise(res => setTimeout(res, ms));
 async function ghWrite(file, token, content, message) {
   const headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
-  let sha;
-  const meta = await fetch(GH_API + file + '?ref=' + encodeURIComponent(GH_BRANCH), { headers, cache: 'no-store' });
-  if (meta.ok) sha = (await meta.json()).sha;
-  const body = { message, branch: GH_BRANCH, content: btoa(unescape(encodeURIComponent(content))) };
-  if (sha) body.sha = sha;
-  const r = await fetch(GH_API + file, { method: 'PUT', headers, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error('GitHub write failed (' + r.status + ')');
+  for (let attempt = 1; ; attempt++) {
+    let sha;
+    const meta = await fetch(GH_API + file + '?ref=' + encodeURIComponent(GH_BRANCH), { headers, cache: 'no-store' });
+    if (meta.ok) sha = (await meta.json()).sha;
+    const body = { message, branch: GH_BRANCH, content: btoa(unescape(encodeURIComponent(content))) };
+    if (sha) body.sha = sha;
+    const r = await fetch(GH_API + file, { method: 'PUT', headers, body: JSON.stringify(body) });
+    if (r.ok) return;
+    if (r.status === 409 && attempt < 4) { await ghSleep(900 * attempt); continue; }
+    throw new Error('GitHub write failed (' + r.status + ')');
+  }
 }
 class Component extends DCLogic {
   state = { cat: 'All', selNo: null, photoIdx: 0, admin: false };
@@ -319,9 +324,11 @@ class Component extends DCLogic {
     it.status = status;
     this.setState({});
     try {
-      const map = {};
-      ITEMS.forEach(i => { map[i.no] = i.status; });
-      await ghWrite('status.json', this._token, JSON.stringify({ status: map }, null, 2) + '\n', 'Set item ' + no + ' to ' + status + ' (via site admin)');
+      await (this._q = (this._q || Promise.resolve()).catch(() => {}).then(() => {
+        const map = {};
+        ITEMS.forEach(i => { map[i.no] = i.status; });
+        return ghWrite('status.json', this._token, JSON.stringify({ status: map }, null, 2) + '\n', 'Set item ' + no + ' to ' + status + ' (via site admin)');
+      }));
     } catch (e) {
       it.status = prev;
       this.setState({});
