@@ -1,15 +1,15 @@
 {
   "status": {
+    "10": "available",
+    "11": "available",
     "01": "available",
     "02": "available",
-    "03": "available",
+    "03": "reserved",
     "04": "available",
     "05": "sold",
     "06": "available",
     "07": "available",
     "08": "sold",
-    "09": "available",
-    "10": "available",
-    "11": "available"
+    "09": "available"
   }
 }
