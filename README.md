@@ -20,6 +20,37 @@ Depois do primeiro deploy, o site fica disponível em:
 
 `https://tacianoz.github.io/garage-sale/`
 
+## Modo admin (marcar itens como vendidos pelo site)
+
+O site tem um modo admin protegido por senha para marcar itens como
+**Sold / Reserved / Available** sem mexer em código:
+
+1. Abra o site e clique no link discreto **· admin ·** no rodapé
+   (ou acesse o site com `#admin` no final da URL)
+2. Digite a senha do admin
+3. Aparecem três botões em cada card — clique para mudar o status.
+   A mudança é gravada no `status.json` deste repositório e vale para
+   todos os visitantes (novos carregamentos da página leem esse arquivo).
+
+### Configuração única (dono do repositório)
+
+O modo admin grava no repositório via API do GitHub usando um token que
+fica salvo **criptografado com a senha** em `token.enc.json`:
+
+1. Crie um token em GitHub → Settings → Developer settings →
+   **Fine-grained personal access tokens**:
+   - Repository access: **somente este repositório**
+   - Permissions → Repository permissions → **Contents: Read and write**
+   - Defina uma expiração (ao expirar, repita este processo)
+2. No site, entre no modo admin com a senha; no primeiro acesso ele pede
+   o token e o salva criptografado no repositório
+3. A partir daí, qualquer pessoa com a senha consegue usar o admin em
+   qualquer aparelho — só a senha é necessária
+
+Nota de segurança: o `token.enc.json` é público (repositório público),
+protegido por criptografia AES-GCM com chave derivada da senha (PBKDF2).
+Use um token restrito a este repositório e com expiração.
+
 ## Desenvolvimento local
 
 ```sh

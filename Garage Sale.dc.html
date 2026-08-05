@@ -90,6 +90,11 @@ a{color:#3f4a3a;} a:hover{color:#22281e;}
               <span style="font-size:17px;font-weight:600;letter-spacing:0.02em;color:{{ it.priceColor }};text-decoration:{{ it.priceDeco }};">{{ it.price }}</span>
               <span style="font-size:12px;color:#a99e88;letter-spacing:0.06em;">View details →</span>
             </div>
+            <div style="display:{{ it.adminDisplay }};gap:6px;padding-top:10px;border-top:1px dashed #c9bda1;margin-top:8px;">
+              <button onClick="{{ it.markSold }}" style="flex:1;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:8px 2px;cursor:pointer;border:1px solid #403a2e;background:{{ it.soldBg }};color:{{ it.soldFg }};">{{ it.soldBtn }}</button>
+              <button onClick="{{ it.markReserved }}" style="flex:1;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:8px 2px;cursor:pointer;border:1px solid #b07d2e;background:{{ it.resBg }};color:{{ it.resFg }};">{{ it.resBtn }}</button>
+              <button onClick="{{ it.markAvailable }}" style="flex:1;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:8px 2px;cursor:pointer;border:1px solid #3f4a3a;background:{{ it.availBg }};color:{{ it.availFg }};">{{ it.availBtn }}</button>
+            </div>
           </div>
         </article>
       </sc-for>
@@ -108,6 +113,7 @@ a{color:#3f4a3a;} a:hover{color:#22281e;}
       <a href="{{ mailGeneral }}" style="display:inline-block;border:1px solid #333829;color:#333829;text-decoration:none;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;padding:13px 24px;" style-hover="background:#333829;color:#efe9da;">E-mail us</a>
     </div>
     <div style="margin-top:34px;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#a99e88;">The Zimmermann family · Jor Bagh · New Delhi</div>
+    <div style="margin-top:16px;"><button onClick="{{ adminOpen }}" style="background:none;border:none;color:#c9bda1;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;padding:6px 10px;">· admin ·</button></div>
   </footer>
   <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(28,24,16,0.58);z-index:50;display:flex;align-items:center;justify-content:center;padding:18px;">
@@ -217,8 +223,48 @@ const res = (path) => {
   const id = path.replace('photos/', '').replace('.jpg', '').replace('-', '_');
   return (window.__resources && window.__resources[id]) || path;
 };
+const GH_OWNER = 'tacianoz', GH_REPO = 'garage-sale', GH_BRANCH = 'claude/garage-sale-github-pages-spijhn';
+const GH_API = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/';
+const ADMIN_SALT = 'zimmermann-gs-2026';
+const ADMIN_PW_HASH = '25937a5d4fe2230912bc31d40515ab0138c8083f71921affb5dae23b8095559c';
+const te = new TextEncoder();
+async function shaHex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', te.encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+async function adminKey(pw) {
+  const base = await crypto.subtle.importKey('raw', te.encode(pw), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: te.encode(ADMIN_SALT), iterations: 310000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+const b64 = (u8) => btoa(String.fromCharCode(...u8));
+const unb64 = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function sealToken(pw, token) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await adminKey(pw), te.encode(token)));
+  return { iv: b64(iv), ct: b64(ct) };
+}
+async function openToken(pw, blob) {
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(blob.iv) }, await adminKey(pw), unb64(blob.ct));
+  return new TextDecoder().decode(pt);
+}
+async function ghRead(file) {
+  const r = await fetch(GH_API + file + '?ref=' + encodeURIComponent(GH_BRANCH), { headers: { Accept: 'application/vnd.github.raw+json' }, cache: 'no-store' });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error('GitHub read failed (' + r.status + ')');
+  return r.json();
+}
+async function ghWrite(file, token, content, message) {
+  const headers = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' };
+  let sha;
+  const meta = await fetch(GH_API + file + '?ref=' + encodeURIComponent(GH_BRANCH), { headers, cache: 'no-store' });
+  if (meta.ok) sha = (await meta.json()).sha;
+  const body = { message, branch: GH_BRANCH, content: btoa(unescape(encodeURIComponent(content))) };
+  if (sha) body.sha = sha;
+  const r = await fetch(GH_API + file, { method: 'PUT', headers, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error('GitHub write failed (' + r.status + ')');
+}
 class Component extends DCLogic {
-  state = { cat: 'All', selNo: null, photoIdx: 0 };
+  state = { cat: 'All', selNo: null, photoIdx: 0, admin: false };
   componentDidMount() {
     this._onKey = (e) => {
       if (this.state.selNo == null) return;
@@ -227,6 +273,9 @@ class Component extends DCLogic {
       if (e.key === 'ArrowRight') this.movePhoto(1);
     };
     window.addEventListener('keydown', this._onKey);
+    this._token = null;
+    this.syncStatus();
+    if (window.location.hash === '#admin') setTimeout(() => this.adminLogin(), 400);
   }
   componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
   movePhoto(d) {
@@ -234,6 +283,50 @@ class Component extends DCLogic {
     if (!it || it.photos.length < 2) return;
     const n = it.photos.length;
     this.setState(s => ({ photoIdx: (s.photoIdx + d + n) % n }));
+  }
+  async syncStatus() {
+    try {
+      const data = await ghRead('status.json');
+      if (!data || !data.status) return;
+      ITEMS.forEach(it => { if (data.status[it.no]) it.status = data.status[it.no]; });
+      this.setState({});
+    } catch (e) {}
+  }
+  async adminLogin() {
+    if (this.state.admin) return;
+    const pw = window.prompt('Senha do admin:');
+    if (!pw) return;
+    if (await shaHex(ADMIN_SALT + '|' + pw) !== ADMIN_PW_HASH) { window.alert('Senha incorreta.'); return; }
+    try {
+      const blob = await ghRead('token.enc.json');
+      if (blob) {
+        try { this._token = await openToken(pw, blob); }
+        catch (e) { window.alert('N\u00e3o consegui destravar o token salvo com essa senha.'); return; }
+      } else {
+        const pat = window.prompt('Primeira configura\u00e7\u00e3o: cole o token do GitHub (fine-grained, s\u00f3 este reposit\u00f3rio, permiss\u00e3o Contents read/write). Ele ficar\u00e1 salvo criptografado com a senha.');
+        if (!pat) return;
+        this._token = pat.trim();
+        await ghWrite('token.enc.json', this._token, JSON.stringify(await sealToken(pw, this._token)), 'Store encrypted admin token');
+      }
+      this.setState({ admin: true });
+      window.alert('Modo admin ativo. Use os bot\u00f5es nos cards para marcar Sold / Reserved / Available.');
+    } catch (e) { window.alert('Erro: ' + e.message); }
+  }
+  async setStatus(no, status) {
+    const it = ITEMS.find(i => i.no === no);
+    if (!it || !this._token || it.status === status) return;
+    const prev = it.status;
+    it.status = status;
+    this.setState({});
+    try {
+      const map = {};
+      ITEMS.forEach(i => { map[i.no] = i.status; });
+      await ghWrite('status.json', this._token, JSON.stringify({ status: map }, null, 2) + '\n', 'Set item ' + no + ' to ' + status + ' (via site admin)');
+    } catch (e) {
+      it.status = prev;
+      this.setState({});
+      window.alert('N\u00e3o consegui salvar no GitHub: ' + e.message);
+    }
   }
   decorate(it) {
     const waNumber = String(this.props.whatsappNumber ?? '+91 00000 00000').replace(/[^0-9]/g, '');
@@ -249,6 +342,13 @@ class Component extends DCLogic {
       wa: `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
       waClick: (e) => { e.preventDefault(); window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener'); },
       mail: `mailto:${email}?subject=${encodeURIComponent('Garage sale — ' + it.name)}&body=${encodeURIComponent(msg)}`,
+      adminDisplay: this.state.admin ? 'flex' : 'none',
+      soldBtn: sold ? 'Sold \u2713' : 'Sold', soldBg: sold ? '#403a2e' : 'transparent', soldFg: sold ? '#fdf9ef' : '#403a2e',
+      resBtn: reserved ? 'Res. \u2713' : 'Res.', resBg: reserved ? '#b07d2e' : 'transparent', resFg: reserved ? '#fdf9ef' : '#b07d2e',
+      availBtn: (!sold && !reserved) ? 'Avail. \u2713' : 'Avail.', availBg: (!sold && !reserved) ? '#3f4a3a' : 'transparent', availFg: (!sold && !reserved) ? '#fdf9ef' : '#3f4a3a',
+      markSold: (e) => { e.stopPropagation(); this.setStatus(it.no, 'sold'); },
+      markReserved: (e) => { e.stopPropagation(); this.setStatus(it.no, 'reserved'); },
+      markAvailable: (e) => { e.stopPropagation(); this.setStatus(it.no, 'available'); },
       open: () => this.setState({ selNo: it.no, photoIdx: 0 }),
     };
   }
@@ -282,6 +382,7 @@ class Component extends DCLogic {
       waGeneral: `https://wa.me/${waNumber}?text=${encodeURIComponent(gMsg)}`,
       waGeneralClick: (e) => { e.preventDefault(); window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(gMsg)}`, '_blank', 'noopener'); },
       mailGeneral: `mailto:${email}?subject=${encodeURIComponent('Garage sale — Jor Bagh')}`,
+      adminOpen: () => this.adminLogin(),
     };
   }
 }
