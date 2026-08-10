@@ -32,6 +32,18 @@
 <meta name="ext-resource-dependency" content="photos/p10-0.jpg" data-resource-id="p10_0">
 <meta name="ext-resource-dependency" content="photos/p11-0.jpg" data-resource-id="p11_0">
 <meta name="ext-resource-dependency" content="photos/p12-0.jpg" data-resource-id="p12_0">
+<meta name="ext-resource-dependency" content="photos/car-01.jpg" data-resource-id="car_01">
+<meta name="ext-resource-dependency" content="photos/car-02.jpg" data-resource-id="car_02">
+<meta name="ext-resource-dependency" content="photos/car-03.jpg" data-resource-id="car_03">
+<meta name="ext-resource-dependency" content="photos/car-04.jpg" data-resource-id="car_04">
+<meta name="ext-resource-dependency" content="photos/car-05.jpg" data-resource-id="car_05">
+<meta name="ext-resource-dependency" content="photos/car-06.jpg" data-resource-id="car_06">
+<meta name="ext-resource-dependency" content="photos/car-07.jpg" data-resource-id="car_07">
+<meta name="ext-resource-dependency" content="photos/car-08.jpg" data-resource-id="car_08">
+<meta name="ext-resource-dependency" content="photos/car-09.jpg" data-resource-id="car_09">
+<meta name="ext-resource-dependency" content="photos/car-10.jpg" data-resource-id="car_10">
+<meta name="ext-resource-dependency" content="photos/car-11.jpg" data-resource-id="car_11">
+<meta name="ext-resource-dependency" content="photos/car-12.jpg" data-resource-id="car_12">
 <template id="__bundler_thumbnail" data-bg-color="#f6f1e8">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="800" fill="#f6f1e8"></rect>
@@ -67,6 +79,71 @@ a{color:#3f4a3a;} a:hover{color:#22281e;}
       </sc-for>
     </div>
   </nav>
+  <section style="background:#2b3026;color:#efe9da;border-top:1px solid #1f231b;border-bottom:1px solid #1f231b;">
+    <div style="max-width:1160px;margin:0 auto;padding:54px 20px 58px;">
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:#c9a97a;font-weight:600;">Featured · the car</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(36px,5.4vw,58px);line-height:1.04;margin:14px 0 0;">{{ car.name }}</h2>
+        <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#a29a86;margin-top:14px;">{{ car.tagline }}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:34px;align-items:start;">
+        <div>
+          <div style="position:relative;aspect-ratio:4/3.1;background:#1f231b;overflow:hidden;">
+            <sc-if value="{{ imgsReady }}" hint-placeholder-val="{{ false }}"><img src="{{ carPhoto }}" alt="{{ car.name }}" style="width:100%;height:100%;object-fit:cover;display:block;filter:{{ car.imgFilter }};"></sc-if>
+            <sc-if value="{{ car.isReserved }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;top:14px;left:14px;background:#b07d2e;color:#fdf9ef;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;padding:7px 13px;">Reserved</span>
+            </sc-if>
+            <sc-if value="{{ car.isSold }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;top:14px;left:14px;background:#efe9da;color:#2b3026;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;padding:7px 13px;">Sold</span>
+            </sc-if>
+            <button onClick="{{ carPrev }}" aria-label="Previous photo" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:rgba(43,48,38,0.78);color:#efe9da;font-size:17px;cursor:pointer;" style-hover="background:#2b3026;">‹</button>
+            <button onClick="{{ carNext }}" aria-label="Next photo" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:rgba(43,48,38,0.78);color:#efe9da;font-size:17px;cursor:pointer;" style-hover="background:#2b3026;">›</button>
+          </div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;">
+            <sc-for list="{{ carThumbs }}" as="t" hint-placeholder-count="8">
+              <sc-if value="{{ imgsReady }}" hint-placeholder-val="{{ false }}"><img src="{{ t.url }}" alt="" loading="lazy" onClick="{{ t.pick }}" style="width:62px;height:62px;object-fit:cover;cursor:pointer;border:2px solid {{ t.border }};opacity:{{ t.opacity }};display:block;"></sc-if>
+            </sc-for>
+          </div>
+          <div style="display:{{ carAdminDisplay }};gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed #4a5140;">
+            <button onClick="{{ carMarkSold }}" style="flex:1;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:9px 2px;cursor:pointer;border:1px solid #efe9da;background:{{ carSoldBg }};color:{{ carSoldFg }};">Sold</button>
+            <button onClick="{{ carMarkReserved }}" style="flex:1;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:9px 2px;cursor:pointer;border:1px solid #c9a97a;background:{{ carResBg }};color:{{ carResFg }};">Res.</button>
+            <button onClick="{{ carMarkAvailable }}" style="flex:1;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:9px 2px;cursor:pointer;border:1px solid #8fa07d;background:{{ carAvailBg }};color:{{ carAvailFg }};">Avail.</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <sc-if value="{{ car.isSold }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#3a4033;border:1px solid #59604c;color:#d5cfbe;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:10px 13px;">Sold — no longer available</div>
+          </sc-if>
+          <div style="display:flex;align-items:baseline;gap:12px;">
+            <span style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#a29a86;">Asking price</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;color:#efe9da;text-decoration:{{ car.priceDeco }};">{{ car.priceLabel }}</span>
+          </div>
+          <p style="font-size:14.5px;line-height:1.8;color:#cfc9b8;margin:0;text-wrap:pretty;">{{ car.desc }}</p>
+          <div>
+            <div style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#c9a97a;font-weight:600;padding-bottom:8px;border-bottom:1px solid #4a5140;">Specification</div>
+            <sc-for list="{{ carSpecs }}" as="s" hint-placeholder-count="8">
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid #3a4033;font-size:13.5px;"><span style="color:#a29a86;">{{ s.k }}</span><span style="font-weight:500;text-align:right;color:#efe9da;">{{ s.v }}</span></div>
+            </sc-for>
+          </div>
+          <div>
+            <div style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#c9a97a;font-weight:600;padding-bottom:10px;">Equipment</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;">
+              <sc-for list="{{ carHighlights }}" as="h" hint-placeholder-count="8">
+                <span style="font-size:12px;letter-spacing:0.04em;color:#d5cfbe;border:1px solid #4a5140;padding:6px 11px;">{{ h.t }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <p style="font-size:12.5px;line-height:1.7;color:#a29a86;margin:0;font-style:italic;">{{ car.note }}</p>
+          <sc-if value="{{ car.contactable }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2px;">
+              <a href="{{ car.wa }}" onClick="{{ car.waClick }}" target="_blank" rel="noopener" style="flex:1;min-width:180px;text-align:center;background:#efe9da;color:#2b3026;text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;padding:15px 18px;" style-hover="background:#ffffff;">WhatsApp about the car</a>
+              <a href="{{ car.mail }}" style="flex:1;min-width:150px;text-align:center;border:1px solid #efe9da;color:#efe9da;text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;padding:15px 18px;" style-hover="background:#efe9da;color:#2b3026;">E-mail</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
   <main style="max-width:1160px;margin:0 auto;padding:44px 20px 24px;">
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:26px;">
       <sc-for list="{{ items }}" as="it" hint-placeholder-count="9">
@@ -218,6 +295,17 @@ const ITEMS = [
     desc: 'A Samsung 50-inch Crystal UHD 4K Smart TV (model UN50AU7700G), with its original table stand. Sharp 4K picture, built-in smart features, and multiple HDMI ports — a reliable everyday television, sold with all cables included.',
     details: [['Screen size', '50 in'], ['Model', 'UN50AU7700G'], ['Resolution', '4K UHD'], ['Condition', 'Working well, ~6 years old']] },
 ];
+const CAR = {
+  name: 'MG Hector Plus',
+  tagline: 'Starry Black \u00b7 1.5 turbo petrol hybrid \u00b7 6-speed manual \u00b7 6 seats',
+  price: null,
+  status: 'available',
+  photos: ['photos/car-01.jpg', 'photos/car-02.jpg', 'photos/car-03.jpg', 'photos/car-04.jpg', 'photos/car-05.jpg', 'photos/car-06.jpg', 'photos/car-07.jpg', 'photos/car-08.jpg', 'photos/car-09.jpg', 'photos/car-10.jpg', 'photos/car-11.jpg', 'photos/car-12.jpg'],
+  desc: 'Our family car in Delhi \u2014 a six-seater MG Hector Plus in Starry Black, built in September 2022 and first registered that November. The 1.5-litre turbo petrol pairs a 48V hybrid system with a six-speed manual gearbox, which makes it easy on fuel in city traffic and genuinely quick once it spools up. Inside it is finished in tan leather, with captain chairs in the middle row, a panoramic sunroof that runs almost the length of the roof, and MG\u2019s tall portrait touchscreen with built-in 4G connectivity. It has carried us all over north India \u2014 comfortable for six, well looked after, and a lot of car for the money.',
+  specs: [['Year of manufacture', 'September 2022'], ['Engine', '1,451 cc turbo petrol, 4-cylinder'], ['Power', '140.8 hp'], ['Hybrid system', '48V mild hybrid'], ['Transmission', '6-speed manual'], ['Seating', '6 (2 + 2 + 2, captain chairs)'], ['Colour', 'Starry Black'], ['Registration', 'Diplomatic (CD) plate, New Delhi']],
+  highlights: ['Panoramic sunroof', 'Tan leather upholstery', 'Portrait touchscreen with Apple CarPlay & Android Auto', 'Connected car with built-in 4G', 'Digital instrument cluster', 'Dual-tone alloy wheels', 'LED headlamps with daytime running lights', 'Roof rails and rear spoiler'],
+  note: 'Registered on diplomatic (CD) plates \u2014 transfer is subject to the usual MEA and customs formalities, which we are happy to walk a buyer through.'
+};
 const fmtPrice = (n) => '₹' + n.toLocaleString('en-IN');
 const res = (path) => {
   const id = path.replace('photos/', '').replace('.jpg', '').replace('-', '_');
@@ -269,7 +357,7 @@ async function ghWrite(file, token, content, message) {
   }
 }
 class Component extends DCLogic {
-  state = { cat: 'All', selNo: null, photoIdx: 0, admin: false };
+  state = { cat: 'All', selNo: null, photoIdx: 0, carIdx: 0, admin: false };
   componentDidMount() {
     this._onKey = (e) => {
       if (this.state.selNo == null) return;
@@ -289,11 +377,16 @@ class Component extends DCLogic {
     const n = it.photos.length;
     this.setState(s => ({ photoIdx: (s.photoIdx + d + n) % n }));
   }
+  moveCar(d) {
+    const n = CAR.photos.length;
+    this.setState(s => ({ carIdx: (s.carIdx + d + n) % n }));
+  }
   async syncStatus() {
     try {
       const data = await ghRead('status.json');
       if (!data || !data.status) return;
       ITEMS.forEach(it => { if (data.status[it.no]) it.status = data.status[it.no]; });
+      if (data.status.car) CAR.status = data.status.car;
       this.setState({});
     } catch (e) {}
   }
@@ -318,19 +411,21 @@ class Component extends DCLogic {
     } catch (e) { window.alert('Erro: ' + e.message); }
   }
   async setStatus(no, status) {
-    const it = ITEMS.find(i => i.no === no);
-    if (!it || !this._token || it.status === status) return;
-    const prev = it.status;
-    it.status = status;
+    const target = no === 'car' ? CAR : ITEMS.find(i => i.no === no);
+    if (!target || !this._token || target.status === status) return;
+    const prev = target.status;
+    target.status = status;
     this.setState({});
+    const label = no === 'car' ? 'the car' : 'item ' + no;
     try {
       await (this._q = (this._q || Promise.resolve()).catch(() => {}).then(() => {
         const map = {};
         ITEMS.forEach(i => { map[i.no] = i.status; });
-        return ghWrite('status.json', this._token, JSON.stringify({ status: map }, null, 2) + '\n', 'Set item ' + no + ' to ' + status + ' (via site admin)');
+        map.car = CAR.status;
+        return ghWrite('status.json', this._token, JSON.stringify({ status: map }, null, 2) + '\n', 'Set ' + label + ' to ' + status + ' (via site admin)');
       }));
     } catch (e) {
-      it.status = prev;
+      target.status = prev;
       this.setState({});
       window.alert('N\u00e3o consegui salvar no GitHub: ' + e.message);
     }
@@ -376,6 +471,9 @@ class Component extends DCLogic {
     const waNumber = String(this.props.whatsappNumber ?? '+91 00000 00000').replace(/[^0-9]/g, '');
     const email = this.props.contactEmail ?? 'zimmermann.family@example.com';
     const gMsg = "Hi! I'm interested in your garage sale in Jor Bagh.";
+    const carSold = CAR.status === 'sold', carReserved = CAR.status === 'reserved';
+    const carIdx = Math.min(this.state.carIdx, CAR.photos.length - 1);
+    const carMsg = `Hi! I'm interested in the ${CAR.name} from the Zimmermanns' garage sale.`;
     return {
       imgsReady: true,
       cats, items, hasSel: !!sel, sel: sel || {},
@@ -390,6 +488,27 @@ class Component extends DCLogic {
       waGeneralClick: (e) => { e.preventDefault(); window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(gMsg)}`, '_blank', 'noopener'); },
       mailGeneral: `mailto:${email}?subject=${encodeURIComponent('Garage sale — Jor Bagh')}`,
       adminOpen: () => this.adminLogin(),
+      car: { ...CAR,
+        priceLabel: CAR.price ? fmtPrice(CAR.price) : 'Price on request',
+        isSold: carSold, isReserved: carReserved, contactable: !carSold,
+        imgFilter: carSold ? 'grayscale(1)' : 'none', priceDeco: carSold ? 'line-through' : 'none',
+        wa: `https://wa.me/${waNumber}?text=${encodeURIComponent(carMsg)}`,
+        waClick: (e) => { e.preventDefault(); window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(carMsg)}`, '_blank', 'noopener'); },
+        mail: `mailto:${email}?subject=${encodeURIComponent('Garage sale \u2014 ' + CAR.name)}&body=${encodeURIComponent(carMsg)}`,
+      },
+      carPhoto: res(CAR.photos[carIdx]),
+      carThumbs: CAR.photos.map((url, i) => ({ url: res(url.replace('.jpg', '-t.jpg')), border: i === carIdx ? '#c9a97a' : 'transparent', opacity: i === carIdx ? '1' : '0.55', pick: () => this.setState({ carIdx: i }) })),
+      carSpecs: CAR.specs.map(([k, v]) => ({ k, v })),
+      carHighlights: CAR.highlights.map(t => ({ t })),
+      carPrev: () => this.moveCar(-1),
+      carNext: () => this.moveCar(1),
+      carAdminDisplay: this.state.admin ? 'flex' : 'none',
+      carSoldBg: carSold ? '#efe9da' : 'transparent', carSoldFg: carSold ? '#2b3026' : '#efe9da',
+      carResBg: carReserved ? '#c9a97a' : 'transparent', carResFg: carReserved ? '#2b3026' : '#c9a97a',
+      carAvailBg: (!carSold && !carReserved) ? '#8fa07d' : 'transparent', carAvailFg: (!carSold && !carReserved) ? '#22281e' : '#8fa07d',
+      carMarkSold: () => this.setStatus('car', 'sold'),
+      carMarkReserved: () => this.setStatus('car', 'reserved'),
+      carMarkAvailable: () => this.setStatus('car', 'available'),
     };
   }
 }

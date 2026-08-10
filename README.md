@@ -20,6 +20,15 @@ Depois do primeiro deploy, o site fica disponível em:
 
 `https://tacianoz.github.io/garage-sale/`
 
+## O anúncio do carro
+
+O MG Hector Plus tem uma seção própria em destaque, logo abaixo do menu de
+categorias — fundo escuro, galeria de 12 fotos e tabela de especificações.
+O conteúdo fica no objeto `CAR` dentro do bloco `<script>` (preço, fotos,
+descrição, specs e equipamentos). Para definir o preço, troque
+`price: null` pelo valor em rupias (ex.: `price: 1250000`); enquanto for
+`null`, a página mostra "Price on request".
+
 ## Modo admin (marcar itens como vendidos pelo site)
 
 O site tem um modo admin protegido por senha para marcar itens como
