@@ -115,9 +115,15 @@ a{color:#3f4a3a;} a:hover{color:#22281e;}
           <sc-if value="{{ car.isSold }}" hint-placeholder-val="{{ false }}">
             <div style="background:#3a4033;border:1px solid #59604c;color:#d5cfbe;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:10px 13px;">Sold — no longer available</div>
           </sc-if>
-          <div style="display:flex;align-items:baseline;gap:12px;">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
             <span style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#a29a86;">Asking price</span>
+            <sc-if value="{{ car.reduced }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#8f8874;text-decoration:line-through;">{{ car.originalPriceLabel }}</span>
+            </sc-if>
             <span style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;color:#efe9da;text-decoration:{{ car.priceDeco }};">{{ car.priceLabel }}</span>
+            <sc-if value="{{ car.reduced }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8fa07d;font-weight:600;border:1px solid #8fa07d;padding:4px 9px;">Price reduced</span>
+            </sc-if>
           </div>
           <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#c9a97a;margin-top:-8px;">Available from {{ car.availableFrom }}</div>
           <p style="font-size:14.5px;line-height:1.8;color:#cfc9b8;margin:0;text-wrap:pretty;">{{ car.desc }}</p>
@@ -300,7 +306,8 @@ const ITEMS = [
 const CAR = {
   name: 'MG Hector Plus',
   tagline: 'Starry Black \u00b7 1.5 turbo petrol hybrid \u00b7 6-speed manual \u00b7 6 seats',
-  price: 1300000,
+  price: 1190000,
+  originalPrice: 1300000,
   availableFrom: '17 September',
   status: 'available',
   photos: ['photos/car-01b.jpg', 'photos/car-02.jpg', 'photos/car-03b.jpg', 'photos/car-04.jpg', 'photos/car-05b.jpg', 'photos/car-06b.jpg', 'photos/car-07b.jpg', 'photos/car-08.jpg', 'photos/car-09.jpg', 'photos/car-10.jpg', 'photos/car-13.jpg', 'photos/car-11.jpg', 'photos/car-12.jpg'],
@@ -493,6 +500,8 @@ class Component extends DCLogic {
       adminOpen: () => this.adminLogin(),
       car: { ...CAR,
         priceLabel: CAR.price ? fmtPrice(CAR.price) : 'Price on request',
+        originalPriceLabel: CAR.originalPrice ? fmtPrice(CAR.originalPrice) : '',
+        reduced: !!(CAR.originalPrice && CAR.originalPrice > CAR.price),
         isSold: carSold, isReserved: carReserved, contactable: !carSold,
         imgFilter: carSold ? 'grayscale(1)' : 'none', priceDeco: carSold ? 'line-through' : 'none',
         wa: `https://wa.me/${waNumber}?text=${encodeURIComponent(carMsg)}`,
