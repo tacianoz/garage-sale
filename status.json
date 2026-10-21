@@ -11,6 +11,7 @@
     "07": "sold",
     "08": "sold",
     "09": "available",
-    "car": "reserved"
+    "car": "sold",
+    "12": "available"
   }
 }
