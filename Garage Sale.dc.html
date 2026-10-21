@@ -402,7 +402,13 @@ class Component extends DCLogic {
   }
   async syncStatus() {
     try {
-      const data = await ghRead('status.json');
+      // The deployed copy updates with each Pages deploy; raw.githubusercontent.com caches for 5 min.
+      let data = null;
+      try {
+        const r = await fetch('status.json', { cache: 'no-store' });
+        if (r.ok) data = await r.json();
+      } catch (e) {}
+      if (!data || !data.status) data = await ghRead('status.json');
       if (!data || !data.status) return;
       ITEMS.forEach(it => { if (data.status[it.no]) it.status = data.status[it.no]; });
       if (data.status.car) CAR.status = data.status.car;
